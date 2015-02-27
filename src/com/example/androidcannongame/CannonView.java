@@ -28,17 +28,15 @@ import android.widget.EditText;
 @SuppressLint({ "ClickableViewAccessibility", "InflateParams" }) 
 public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 	private static final String TAG = "CannonView"; // for logging errors
-	//private EditText nameInput = (EditText) findViewById(R.id.nameInput);
 	public String playerName;
 
 	private CannonThread cannonThread; // controls the game loop
 	private Activity activity; // to display Game Over dialog in GUI thread
 	private boolean dialogIsDisplayed = false;   
 	private int level;
-	public int score;
+	public int score= 0;
 
 	// constants for game play
-	//public static final int TARGET_PIECES = 7; // sections in the target
 	public static final int MISS_PENALTY = 2; // seconds deducted on a miss
 	public static final int HIT_REWARD = 3; // seconds added on a hit
 	public static final String MY_PREFERENCES = "Preferences" ; 
@@ -50,7 +48,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 	private double totalElapsedTime; // elapsed seconds 
 
 	// variables for the blocker and target
-	private int TARGET_PIECES = 7;
+	private int TARGET_PIECES = 9;
 	private Line blocker; // start and end points of the blocker
 	private int blockerDistance; // blocker distance from left
 	private int blockerBeginning; // blocker top-edge distance from top
@@ -189,9 +187,8 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 	// reset all the screen elements and start a new game
 	public void newGame()
 	{
-
 		//level 1 starts
-		if(level == 1){
+		if(this.level == 1){
 			TARGET_PIECES = 1;
 			// set every element of hitStates to false--restores target pieces
 			for (int i = 0; i < TARGET_PIECES; i++)
@@ -200,7 +197,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity; // set initial velocity
 			targetVelocity = initialTargetVelocity; // set initial velocity
-			timeLeft = 100; // start the countdown at 10 seconds
+			timeLeft = 50; // start the countdown at 50 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -215,14 +212,15 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 2 starts
-		else if(level == 2){
+		else if(this.level == 2){
 			TARGET_PIECES = 2;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
+			
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 1; // set initial velocity
 			targetVelocity = initialTargetVelocity + 1; // set initial velocity
-			timeLeft = 90; // start the countdown at 10 seconds
+			timeLeft = 45; // start the countdown at 45 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -237,14 +235,16 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 3 starts
-		else if(level == 3){
+		else if(this.level == 3){
 			TARGET_PIECES = 3;
-			for (int i = 0; i < TARGET_PIECES; i++)
+			for (int i = 0; i < TARGET_PIECES; i++){
 				hitStates[i] = false;
+			}
+				
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 2; // set initial velocity
 			targetVelocity = initialTargetVelocity + 2; // set initial velocity
-			timeLeft = 80; // start the countdown at 10 seconds
+			timeLeft = 40; // start the countdown at 40 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -259,14 +259,14 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 4 starts
-		else if(level == 4){
+		else if(this.level == 4){
 			TARGET_PIECES = 4;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 3; // set initial velocity
 			targetVelocity = initialTargetVelocity + 3; // set initial velocity
-			timeLeft = 70; // start the countdown at 10 seconds
+			timeLeft = 35; // start the countdown at 35 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -281,14 +281,14 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 5 starts
-		else if(level == 5){
+		else if(this.level == 5){
 			TARGET_PIECES = 5;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 4; // set initial velocity
 			targetVelocity = initialTargetVelocity + 4; // set initial velocity
-			timeLeft = 60; // start the countdown at 10 seconds
+			timeLeft = 30; // start the countdown at 30 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -303,14 +303,14 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 6 starts
-		else if(level == 6){
+		else if(this.level == 6){
 			TARGET_PIECES = 6;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 5; // set initial velocity
 			targetVelocity = initialTargetVelocity + 5; // set initial velocity
-			timeLeft = 55; // start the countdown at 10 seconds
+			timeLeft = 30; // start the countdown at 30 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -325,14 +325,14 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 7 starts
-		else if(level == 7){
+		else if(this.level == 7){
 			TARGET_PIECES = 7;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 6; // set initial velocity
 			targetVelocity = initialTargetVelocity + 6; // set initial velocity
-			timeLeft = 50; // start the countdown at 10 seconds
+			timeLeft = 25; // start the countdown at 25 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -347,14 +347,15 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 8 starts
-		else if(level == 8){
+		else if(this.level == 8){
 			TARGET_PIECES = 8;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
+			
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 7; // set initial velocity
 			targetVelocity = initialTargetVelocity + 7; // set initial velocity
-			timeLeft = 45; // start the countdown at 10 seconds
+			timeLeft = 20; // start the countdown at 20 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -369,14 +370,15 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			loadScore(getContext());
 		}
 		//level 9 starts
-		else if(level == 9){
+		else if(this.level == 9){
 			TARGET_PIECES = 9;
 			for (int i = 0; i < TARGET_PIECES; i++)
 				hitStates[i] = false;
+			
 			targetPiecesHit = 0; // no target pieces have been hit
 			blockerVelocity = initialBlockerVelocity + 8; // set initial velocity
 			targetVelocity = initialTargetVelocity + 8; // set initial velocity
-			timeLeft = 40; // start the countdown at 10 seconds
+			timeLeft = 20; // start the countdown at 20 seconds
 			cannonballOnScreen = false; // the cannonball is not on the screen
 			shotsFired = 0; // set the initial number of shots fired
 			totalElapsedTime = 0.0; // set the time elapsed to zero
@@ -388,14 +390,14 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			target.end.set(targetDistance, targetEnd);
 
 			//Load player score
-			loadScore(getContext());
+			//loadScore(getContext());
 		}
 
 
 		if (gameOver) // starting a new game after the last game ended
 		{
 			gameOver = false; 
-			level += 1;
+			this.level += 1;
 			cannonThread = new CannonThread(getHolder()); // create thread
 			cannonThread.start(); // start the game loop thread
 		} 
@@ -421,7 +423,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 				cannonballVelocityX *= -1; // reverse cannonball's direction
 				timeLeft -= MISS_PENALTY; // penalize the user
 
-				score -= (level * 15);
+				this.score -= (level * 15);
 				// play blocker sound
 				soundPool.play(soundMap.get(BLOCKER_SOUND_ID), 1, 1, 1, 0, 1f);
 			}
@@ -455,7 +457,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 					cannonballOnScreen = false; // remove cannonball
 					timeLeft += HIT_REWARD; // add reward to remaining time
 
-					score += (level * 10);
+					this.score += (level * 10);
 					// play target hit sound
 					soundPool.play(soundMap.get(TARGET_SOUND_ID), 1,
 							1, 1, 0, 1f);
@@ -498,6 +500,8 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 			gameOver = true; // the game is over
 			cannonThread.setRunning(false); // terminate thread
 			showGameOverDialog(R.string.lose); // show the losing dialog
+			this.level = 1;
+			TARGET_PIECES = 1;
 		} 
 	} // end method updatePositions
 
@@ -547,8 +551,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 
 		// calculate the endpoint of the cannon barrel
 		barrelEnd.x = (int) (cannonLength * Math.sin(angle));
-		barrelEnd.y = 
-				(int) (-cannonLength * Math.cos(angle) + screenHeight / 2);
+		barrelEnd.y = (int) (-cannonLength * Math.cos(angle) + screenHeight / 2);
 
 		return angle; // return the computed angle
 	} // end method alignCannon
@@ -637,13 +640,16 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 						// get player_name_prompt.xml view
 						LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 
+						//Create View to be shown in the alert dialog
 						View promptView = layoutInflater.inflate(R.layout.player_name_prompt, null);
 
+						//Create the alert dialog
 						AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
 						// set player_name_prompt.xml to be the layout file of the alertdialog builder
 						alertDialogBuilder.setView(promptView);
 
+						//instantiate the edit text for the player_name_prompt.xml
 						final EditText input = (EditText) promptView.findViewById(R.id.nameInput);
 
 						// setup a dialog window
@@ -653,7 +659,6 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 							public void onClick(DialogInterface dialog, int id) {
 								// get user input and set it to playerName
 								playerName = input.getText().toString();
-								
 								dialogIsDisplayed = false;
 								newGame(); // set up and start a new game
 							}
@@ -699,6 +704,8 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 		final DialogFragment gameResult = 
 				new DialogFragment()
 		{
+			private int score;
+
 			// create an AlertDialog and return it
 			@Override
 			public Dialog onCreateDialog(Bundle bundle)
@@ -710,7 +717,7 @@ public class CannonView extends SurfaceView implements SurfaceHolder.Callback {
 
 				// display number of shots fired and total time elapsed
 				builder.setMessage(getResources().getString(
-						R.string.results_format, shotsFired, totalElapsedTime));
+						R.string.results_format, shotsFired, totalElapsedTime, this.score));
 				builder.setPositiveButton(R.string.next_level,
 						new DialogInterface.OnClickListener()
 				{
